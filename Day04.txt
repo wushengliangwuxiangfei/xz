@@ -1,0 +1,207 @@
+一.组件
+  1.模态框
+    模态框(modal)是覆盖在父窗体上的子窗体，模态框可以在不离开父窗体的情况下有一些互动，提供一些交互信息等。
+    <button data-toggle="modal" data-target="#demo"></button>
+
+    <div id="demo" class="modal">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+	     <div class="modal-header"></div>
+	     <div class="modal-body"></div>
+	     <div class="modal-footer"></div>
+	  </div>
+	</div>
+    </div>
+  2.其它组件
+    1.徽章
+      使用.badge类设置徽章效果
+    2.巨幕：jumbotron
+    3.分页
+      要创建一个基本的分页可以在ul元素上添加.pagination类，然后在li元素上添加.page-item类。
+    4.面包屑导航
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item">...</li>
+      </ul>
+    5.进度条
+      <div class="progress">
+         <div class="progress-bar w-50"></div>
+      </div>
+      使用.progress-bar-striped类设置条纹的进度条
+      使用.progress-bar-animated类为进度条设置动画
+      在一个进度条上设置多种颜色，在同一个progress中写多个progress-bar，加bg-*
+
+  Bootstrap重点：媒体技术+栅格布局+SCSS
+二.SCSS
+  ex:
+  $jd_red:F10215;
+  .register{
+     color:$jd_red;
+  }
+  .search{
+    backgorund:$jd_red;
+  }
+  ul li a{
+    color:$jd_red;
+  }
+  div{
+    border:1px solid $jd_red;
+  }
+  1.CSS有以下几个缺点
+    语法不够强大，没有变量和合理的样式复用机制，使得逻辑上相关的属性值必须以字面的形式重复输出，导致难以维护。
+    动态样式语言为css赋予了动态语言的特性，极大的提高了样式语言的可维护性。
+    常见的动态样式语言：
+       1.Scss/Sass 
+       2.stylus
+       3.Less
+     Scss/Sass/stylus/Less都属于css预处理器
+     预处理器？
+     用一种专门的编程语言，进行web页面样式设计，再通过编译器转化为正常的css文件，以供项目使用。
+  2.什么是SCSS
+    SCSS是一款强化CSS的辅助工具，它在CSS语法的基础上增加了变量，嵌套，混合，导入，函数等高级功能，这些拓展令CSS更加强大与优雅。
+  3.SCSS的作用
+    有助于更好的管理样式文件，以及更高效的开发项目。
+  4.SCSS的使用
+   1.在服务器端使用
+    (1)安装NodeJS解释器
+    (2)安装SCSS编译程序
+      在线安装： npm install -g node-sass 
+      
+      在webstorm中打开命令行界面的快捷键：alt+F12
+      刷新项目文件：ctrl+alt+Y
+      测试scss安装的版本：node-sass -v
+
+    (3)在命令行编译scss文件，转化为css文件
+      单文件转换命令：
+      node-sass scss文件夹/01.scss css文件夹/01.css
+
+      多文件转换命令：
+      node-sass scss文件夹 -o css文件夹
+
+      单文件监听命令：
+      node-sass -w scss文件夹/01.scss css文件夹/01.css
+      
+      多文件监听命令：
+      node-sass -w scss文件夹 -o css文件
+   2.SCSS的基础语法
+    (1)变量
+      使用$符号标识变量
+      变量命名规范遵循CSS中选择器的命名规范，可以包含-,_，尽量见名知意。
+      $jd_red:#f10215;  //颜色变量
+      $normal-width:100px; //数值变量
+      $before-content:"子曰"; //字符串变量
+      $border-style:solid; //样式变量
+      $my_border:1px solid $jd_red;//声明变量时，变量的值也可以是引用其他变量
+      div{
+        border:$my_border;
+	$width:200px; //只能在当前大括号中使用
+	width:$width;  
+      }
+      注意：
+      1.声明变量时，变量值可以引用其他变量
+      2.变量定义在{}规则块外边，整个样式文件中都可以使用，定义在{}规则块内，它只能在当前规则块中使用。
+      3.声明重复变量，后声明的变量会覆盖前面的变量，尽量不要重复。
+
+      !default规则：
+      如果变量已经声明赋值了，那就用它声明的值，否则就用这个默认值。
+      $jd_red:#f10215;
+      $jd_red:blue !default; //优先使用前面的红色，后考虑当前这个默认值
+    (2)嵌套规则
+      ex:
+      #content div.top h1{color:#333;}
+      #content div.top p{padding-bottom:15px;}
+      #content div.middle{background:#ddd;}
+      在选择器中嵌套其它选择器
+      改写上面的代码：
+      #content{
+         div.top{
+	   h1{color:#333;}
+	   p{padding-bottom:15px;}
+	 }
+	 div.middle{background:#ddd;}
+      }
+      问题-用嵌套改写下面代码：
+      a{color:black;}
+      a:hover{color:red;}
+      在嵌套规则中，有时需要使用嵌套外层的父选择器，可用&代表嵌套规则外层的父选择器。
+      a{color:black;
+        &:hover{color:red;}
+      }
+
+      练习：用scss完成按钮的效果。
+    
+    (3)群组选择器嵌套
+      ex：
+      css群组选择器：
+      nav a,aside a,footer a{color:black;}
+      scss中群组嵌套：
+      nav,aside,footer{
+        a{color:black}
+      }
+    (4)属性嵌套
+      在scss中，除了选择器可以嵌套，属性也可以嵌套
+      ex:
+       css:
+       div{
+         border-style:solid;
+	 border-width:1px;
+	 border-color:#ccc;
+       }
+       scss:
+       div{
+          border:{style:solid;width:1px;color:#ccc;}
+       }
+       练习：一个200*200的div，红色背景，鼠标悬停时过渡到黄色背景，并且变为圆形，用scss编写样式代码。
+
+    (5)导入SCSS文件
+      在SCSS中，局部文件名以下划线开头
+      这样，sass在编译时就不会编译以下划线开头的文件，而只是把这个文件用作导入。引入局部文件时，还可以不写文件的全名，即省略文件开头下划线和.scss后缀。并且局部文件可以被多个文件同时引用。
+      在主scss文件中以@import引用其它的局部文件。
+      ex:
+      _color.scss //局部scss文件
+
+      在myMain.scss中引入_color.scss文件
+      @import "color";
+    (6)混合器
+       ex:
+       box-shadow:0 0 50px 20px red;
+       -ms-box-shadow:0 0 50px 20px red;
+       -webkit-box-shadow:0 0 50px 20px red;
+       ...
+       使用 @mixin标识符定义
+       语法：
+         @mixin 混合器名称{样式声明}
+
+       通过 @include来使用混合器
+       语法：
+         选择器{@include 混合器名称}
+       练习：
+         a链接文字为灰色无下划线效果，用列表布局，在scss中编写样式，边框圆角用混合器的方式编写，鼠标悬停在链接上时文字颜色变为京东红。
+    (7)带参混合器
+      定义带参混合器
+        @mixin 混合器名称(参数1，参数2，参数3...){
+	   属性1：参数1；
+	   属性2：参数2；
+	   属性3：参数3；
+	}
+
+      使用带参混合器：
+        选择器{ @include 混合器名称(实参1，实参2，实参3)}
+
+   课后作业：
+     1.定义一个带参混合器，抽离出字体大小，样式和粗细，在div和p元素中使用混合器，传入不同参数查看效果（scss方式编写样式）。
+
+     2.用bootstrap中栅格完成图片布局（图片见"课后作业"文件夹），大屏幕下一行4张图，中等屏幕一行2张图，小屏幕下一行1张图
+
+     3.复习今天所学内容，整理思维导图。
+
+
+
+
+
+
+
+
+
+  
+
+  
